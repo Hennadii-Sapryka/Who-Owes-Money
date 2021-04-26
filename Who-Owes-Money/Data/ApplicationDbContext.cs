@@ -1,9 +1,9 @@
 ﻿using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
-using WhoOwesWhom.Models;
+using Who_Owes_Money.Models;
 
-namespace WhoOwesWhom.Data
+namespace Who_Owes_Money.Data
 {
     public class ApplicationDbContext : IdentityDbContext
     {
