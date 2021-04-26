@@ -1,10 +1,9 @@
-﻿using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
+﻿using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
-using System;
-using System.Collections.Generic;
-using System.Text;
+using WhoOwesWhom.Models;
 
-namespace Who_Owes_Money.Data
+namespace WhoOwesWhom.Data
 {
     public class ApplicationDbContext : IdentityDbContext
     {
@@ -12,5 +11,9 @@ namespace Who_Owes_Money.Data
             : base(options)
         {
         }
+
+        public DbSet<Product> Product { get; set; }
+        public DbSet<IdentityUser> identityUsers { get; set; }
+
     }
 }
