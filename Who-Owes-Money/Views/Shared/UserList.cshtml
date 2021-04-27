@@ -1,0 +1,28 @@
+﻿@model IEnumerable<Product>
+
+@{
+    ViewData["Title"] = "UserList";
+}
+
+<div class="text-center">
+    <h1 class="display-4">List of users</h1>
+
+</div>
+
+<div class="display-4">
+    <table>
+
+        @foreach (var item in Model
+            .GroupBy(m => m.UserName)
+            .Select(g => new Product { UserName = g.Key, Price = g.Sum(p => p.Price) }))
+
+        {
+            <tr>
+                <td>
+                    @item.UserName-spent @item.Price UHA
+                </td>
+            </tr>
+        }
+    </table>
+</div>
+
