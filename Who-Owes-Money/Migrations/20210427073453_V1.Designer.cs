@@ -10,7 +10,7 @@ using Who_Owes_Money.Data;
 namespace Who_Owes_Money.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20210426173625_V1")]
+    [Migration("20210427073453_V1")]
     partial class V1
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -114,9 +114,6 @@ namespace Who_Owes_Money.Migrations
                     b.Property<bool>("PhoneNumberConfirmed")
                         .HasColumnType("bit");
 
-                    b.Property<int?>("ProductId")
-                        .HasColumnType("int");
-
                     b.Property<string>("SecurityStamp")
                         .HasColumnType("nvarchar(max)");
 
@@ -136,8 +133,6 @@ namespace Who_Owes_Money.Migrations
                         .IsUnique()
                         .HasName("UserNameIndex")
                         .HasFilter("[NormalizedUserName] IS NOT NULL");
-
-                    b.HasIndex("ProductId");
 
                     b.ToTable("AspNetUsers");
                 });
@@ -226,25 +221,24 @@ namespace Who_Owes_Money.Migrations
                     b.ToTable("AspNetUserTokens");
                 });
 
-            modelBuilder.Entity("WhoOwesWhom.Models.Product", b =>
+            modelBuilder.Entity("Who_Owes_Money.Models.Product", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<string>("Name")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(10)")
-                        .HasMaxLength(10);
-
                     b.Property<int>("Price")
-                        .HasColumnType("int");
-
-                    b.Property<string>("User")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(10)")
+                        .HasColumnType("int")
                         .HasMaxLength(10);
+
+                    b.Property<string>("ProductName")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(20)")
+                        .HasMaxLength(20);
+
+                    b.Property<string>("UserName")
+                        .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
 
@@ -258,13 +252,6 @@ namespace Who_Owes_Money.Migrations
                         .HasForeignKey("RoleId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
-                });
-
-            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUser", b =>
-                {
-                    b.HasOne("WhoOwesWhom.Models.Product", null)
-                        .WithMany("identytiUsers")
-                        .HasForeignKey("ProductId");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserClaim<string>", b =>
