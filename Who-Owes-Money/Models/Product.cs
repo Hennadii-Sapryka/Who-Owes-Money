@@ -16,7 +16,6 @@ namespace Who_Owes_Money.Models
         public string ProductName { get; set; }
 
         [Required]
-        [MaxLength(10)]
         [Range(1, int.MaxValue, ErrorMessage = "лише числа які більше 0")]
         [Display(Name = "Price")]
         public int Price { get; set; }

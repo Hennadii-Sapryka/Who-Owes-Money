@@ -62,8 +62,8 @@ namespace Who_Owes_Money.Controllers
         {
             if (ModelState.IsValid)
             {
-                var identity = _identityUser.Users.FirstOrDefault(m => m.UserName == m.NormalizedEmail);
-                product.UserName = identity.UserName;
+                var user = _identityUser.GetUserName(User);
+                product.UserName = user;
                 _context.Add(product);
                 await _context.SaveChangesAsync();
 
