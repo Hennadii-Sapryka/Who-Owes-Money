@@ -10,7 +10,7 @@ using Who_Owes_Money.Data;
 namespace Who_Owes_Money.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20210919155629_V1")]
+    [Migration("20210919162123_V1")]
     partial class V1
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -228,8 +228,8 @@ namespace Who_Owes_Money.Migrations
                         .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<int>("Price")
-                        .HasColumnType("int");
+                    b.Property<double>("Price")
+                        .HasColumnType("float");
 
                     b.Property<string>("ProductName")
                         .IsRequired()

@@ -6,6 +6,8 @@ using Who_Owes_Money.Data;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using Who_Owes_Money.Infrastructure;
+using Microsoft.AspNetCore.Mvc;
 
 namespace Who_Owes_Money
 {
@@ -28,6 +30,11 @@ namespace Who_Owes_Money
                 .AddEntityFrameworkStores<ApplicationDbContext>();
             services.AddControllersWithViews();
             services.AddRazorPages();
+
+            services.AddMvc(opts =>
+            {
+                opts.ModelBinderProviders.Insert(0, new CustomDecimalModelBinderProvider());
+            }).SetCompatibilityVersion(CompatibilityVersion.Version_3_0);
 
 
             services.AddAuthentication().AddFacebook(facebookOptions =>

@@ -1,4 +1,5 @@
-﻿@model IEnumerable<Product>
+﻿@using System
+@model IEnumerable<Product>
 
 @{
     ViewData["Title"] = "UserList";
@@ -19,7 +20,7 @@
         {
             <tr>
                 <td>
-                    @item.UserName-spent @item.Price UHA
+                    @item.UserName-spent @Math.Round(item.Price) UHA
                 </td>
             </tr>
         }

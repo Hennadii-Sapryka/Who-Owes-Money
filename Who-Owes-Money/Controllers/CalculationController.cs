@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;
 using System.Linq;
+using System;
 using Who_Owes_Money.Data;
 using Who_Owes_Money.Models;
 
@@ -11,11 +12,14 @@ namespace Who_Owes_Money.Controllers
     {
         private readonly ApplicationDbContext _context;
         private readonly UserManager<IdentityUser> _userContext;
+        public readonly  List<ResultCalculation> _results;
 
         public CalculationController(ApplicationDbContext context, UserManager<IdentityUser> userContext)
         {
             _context = context;
             _userContext = userContext;
+            _results = new List<ResultCalculation>();
+
         }
 
         public IActionResult Calculation()
@@ -27,15 +31,12 @@ namespace Who_Owes_Money.Controllers
                 return View("NotFound");
             }
 
-            int average = products
-                .Sum(m => m.Price)
-                / products
-                .GroupBy(m => m.UserName)
-                .Count();
+            double average = Math.Round(products.Sum(m => m.Price))
+                / products.GroupBy(m => m.UserName).Count();
 
             List<ResultCalculation> results = new List<ResultCalculation>();
 
-            Product[] people = products
+            Product[] buyers = products
                 .GroupBy(m => m.UserName)
                 .Select(g => new Product
                 {
@@ -43,38 +44,38 @@ namespace Who_Owes_Money.Controllers
                     Price = g.Sum(p => p.Price)
                 }).ToArray();
 
-            Product[] paidMoreMoney = people.Where(m => m.Price > average).ToArray();
-            Product[] paidLessMoney = people.Where(m => m.Price < average).ToArray();
+            Product[] buyersOverPaid = buyers.Where(m => m.Price > average).ToArray();
+            Product[] buyersUnderPaid = buyers.Where(m => m.Price < average).ToArray();
 
-            for (int i = 0; i < paidMoreMoney.Length; i++)
+            for (int i = 0; i < buyersOverPaid.Length; i++)
             {
-                for (int j = 0; j < paidLessMoney.Length; j++)
+                for (int j = 0; j < buyersUnderPaid.Length; j++)
                 {
                     int count = 0;
-                    while (paidLessMoney[j].Price != average)
+                    while (buyersUnderPaid[j].Price != average)
                     {
-                        if (paidMoreMoney[i].Price != average)
+                        if (buyersOverPaid[i].Price != average)
                         {
-                            paidMoreMoney[i].Price -= 1;
-                            paidLessMoney[j].Price += 1;
+                            buyersOverPaid[i].Price -= 1;
+                            buyersUnderPaid[j].Price += 1;
                             count++;
                         }
-                        if (paidLessMoney[j].Price == average)
+                        if (buyersUnderPaid[j].Price == average)
                         {
                             results.Add(new ResultCalculation
                             {
-                                UserLess = paidLessMoney[j].UserName,
-                                UserMore = paidMoreMoney[i].UserName,
+                                UserUnderPaid = buyersUnderPaid[j].UserName,
+                                UserOverPaid = buyersOverPaid[i].UserName,
                                 Money = count,
-                                Average = average,
+                                Average = (int)average,
                             });
                         }
-                        else if (paidMoreMoney[i].Price == average)
+                        else if (buyersOverPaid[i].Price == average)
                         {
                             results.Add(new ResultCalculation
                             {
-                                UserLess = paidLessMoney[j].UserName,
-                                UserMore = paidMoreMoney[i].UserName,
+                                UserUnderPaid = buyersUnderPaid[j].UserName,
+                                UserOverPaid = buyersOverPaid[i].UserName,
                                 Money = count
                             });
                             i++;
