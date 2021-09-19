@@ -227,8 +227,7 @@ namespace Who_Owes_Money.Migrations
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
                     b.Property<int>("Price")
-                        .HasColumnType("int")
-                        .HasMaxLength(10);
+                        .HasColumnType("int");
 
                     b.Property<string>("ProductName")
                         .IsRequired()
