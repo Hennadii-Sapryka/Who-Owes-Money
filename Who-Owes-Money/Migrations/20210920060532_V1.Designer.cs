@@ -10,7 +10,7 @@ using Who_Owes_Money.Data;
 namespace Who_Owes_Money.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20210919162123_V1")]
+    [Migration("20210920060532_V1")]
     partial class V1
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)

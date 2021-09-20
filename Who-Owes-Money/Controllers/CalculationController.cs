@@ -31,7 +31,12 @@ namespace Who_Owes_Money.Controllers
                 return View("NotFound");
             }
 
-            double average = Math.Round(products.Sum(m => m.Price))
+            //Math
+            double average = Math.Truncate(products.Sum(m => m.Price)
+                / products.GroupBy(m => m.UserName).Count());
+
+            //Without Math
+            double average1 = (int)products.Sum(m => m.Price)
                 / products.GroupBy(m => m.UserName).Count();
 
             List<ResultCalculation> results = new List<ResultCalculation>();
@@ -41,7 +46,7 @@ namespace Who_Owes_Money.Controllers
                 .Select(g => new Product
                 {
                     UserName = g.Key,
-                    Price = g.Sum(p => p.Price)
+                    Price = Math.Truncate(g.Sum(p => p.Price))
                 }).ToArray();
 
             Product[] buyersOverPaid = buyers.Where(m => m.Price > average).ToArray();

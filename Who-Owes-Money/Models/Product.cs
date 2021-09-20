@@ -21,8 +21,8 @@ namespace Who_Owes_Money.Models
         public string ProductName { get; set; }
 
         [Required]
-        [Range(1, double.MaxValue, ErrorMessage = "лише числа які більше 0")]
         [Display(Name = "Price")]
+        [DisplayFormat(DataFormatString ="{0:c2}")]
         public double Price { get; set; }
 
         public string UserName { get; set; }
