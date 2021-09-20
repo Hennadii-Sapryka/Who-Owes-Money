@@ -19,7 +19,6 @@ namespace Who_Owes_Money.Controllers
             _context = context;
             _userContext = userContext;
             _results = new List<ResultCalculation>();
-
         }
 
         public IActionResult Calculation()
@@ -31,15 +30,8 @@ namespace Who_Owes_Money.Controllers
                 return View("NotFound");
             }
 
-            //Math
             double average = Math.Truncate(products.Sum(m => m.Price)
                 / products.GroupBy(m => m.UserName).Count());
-
-            //Without Math
-            double average1 = (int)products.Sum(m => m.Price)
-                / products.GroupBy(m => m.UserName).Count();
-
-            List<ResultCalculation> results = new List<ResultCalculation>();
 
             Product[] buyers = products
                 .GroupBy(m => m.UserName)
@@ -67,7 +59,7 @@ namespace Who_Owes_Money.Controllers
                         }
                         if (buyersUnderPaid[j].Price == average)
                         {
-                            results.Add(new ResultCalculation
+                            _results.Add(new ResultCalculation
                             {
                                 UserUnderPaid = buyersUnderPaid[j].UserName,
                                 UserOverPaid = buyersOverPaid[i].UserName,
@@ -77,7 +69,7 @@ namespace Who_Owes_Money.Controllers
                         }
                         else if (buyersOverPaid[i].Price == average)
                         {
-                            results.Add(new ResultCalculation
+                            _results.Add(new ResultCalculation
                             {
                                 UserUnderPaid = buyersUnderPaid[j].UserName,
                                 UserOverPaid = buyersOverPaid[i].UserName,
@@ -89,8 +81,7 @@ namespace Who_Owes_Money.Controllers
                     }
                 }
             }
-
-            return View(results);
+            return View(_results);
         }
     }
 }
