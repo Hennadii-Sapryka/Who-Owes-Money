@@ -11,11 +11,13 @@ namespace Who_Owes_Money.Controllers
     {
         private readonly ApplicationDbContext _context;
         private readonly UserManager<IdentityUser> _userContext;
+        private readonly List<ResultCalculation> _results;
 
         public CalculationController(ApplicationDbContext context, UserManager<IdentityUser> userContext)
         {
             _context = context;
             _userContext = userContext;
+            _results = new List<ResultCalculation>(); ;
         }
 
         public IActionResult Calculation()
@@ -32,8 +34,6 @@ namespace Who_Owes_Money.Controllers
                 / products
                 .GroupBy(m => m.UserName)
                 .Count();
-
-            List<ResultCalculation> results = new List<ResultCalculation>();
 
             Product[] people = products
                 .GroupBy(m => m.UserName)
@@ -61,7 +61,7 @@ namespace Who_Owes_Money.Controllers
                         }
                         if (paidLessMoney[j].Price == average)
                         {
-                            results.Add(new ResultCalculation
+                            _results.Add(new ResultCalculation
                             {
                                 UserLess = paidLessMoney[j].UserName,
                                 UserMore = paidMoreMoney[i].UserName,
@@ -71,7 +71,7 @@ namespace Who_Owes_Money.Controllers
                         }
                         else if (paidMoreMoney[i].Price == average)
                         {
-                            results.Add(new ResultCalculation
+                            _results.Add(new ResultCalculation
                             {
                                 UserLess = paidLessMoney[j].UserName,
                                 UserMore = paidMoreMoney[i].UserName,
@@ -83,8 +83,7 @@ namespace Who_Owes_Money.Controllers
                     }
                 }
             }
-
-            return View(results);
+            return View(_results);
         }
     }
 }
