@@ -1,5 +1,5 @@
 ﻿@using Who_Owes_Money.Models
-@model IEnumerable<ResultCalculation>
+@model IEnumerable<ResultOfCalculation>
 
 @{
     ViewData["Title"] = "Calculation";
@@ -20,9 +20,9 @@
         @foreach (var item in Model)
         {
             <tr>
-                <td>@item.UserLess</td>
-                <td>@item.Money UHA</td>
-                <td>@item.UserMore</td>
+                <td>@item.UnderPay</td>
+                <td>@item.Amount UHA</td>
+                <td>@item.OverPay</td>
             </tr>
         }
     </tbody>

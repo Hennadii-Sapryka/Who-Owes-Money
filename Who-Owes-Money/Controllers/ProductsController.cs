@@ -57,8 +57,8 @@ namespace Who_Owes_Money.Controllers
 
         [Authorize]
         [HttpPost]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("ProductName,Price")] Product product)
+
+        public async Task<IActionResult> Create([Bind("ProductName, Price")] Product product)
         {
             if (ModelState.IsValid)
             {

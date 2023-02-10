@@ -2,12 +2,13 @@
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Who_Owes_Money.Models
 {
     public class Product
     {
-        [Display(Name = "№")]
+
         public int Id { get; set; }
 
         [Required]
@@ -15,10 +16,9 @@ namespace Who_Owes_Money.Models
         [Display(Name = "What bought")]
         public string ProductName { get; set; }
 
-        [Required]
-        [Range(1, int.MaxValue, ErrorMessage = "лише числа які більше 0")]
-        [Display(Name = "Price")]
-        public int Price { get; set; }
+    
+        [Range(0.01, 99999.99, ErrorMessage = "лише числа які більше 0")]
+        public decimal Price { get; set; }
 
         public string UserName { get; set; }
     }

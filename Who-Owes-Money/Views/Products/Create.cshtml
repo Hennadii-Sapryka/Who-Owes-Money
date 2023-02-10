@@ -1,9 +1,15 @@
 ﻿@model Who_Owes_Money.Models.Product
 @using Microsoft.AspNetCore.Identity
+@using System.Threading;
+@using System.Threading.Tasks;
+@using System.Globalization;
 @inject UserManager<IdentityUser> UserManager
 
 @{
     ViewData["Title"] = "Create";
+    Thread.CurrentThread.CurrentUICulture= new CultureInfo("en-US");
+    var tempCultur = Thread.CurrentThread.CurrentCulture.Name;
+    var tempCultur2 = Thread.CurrentThread.CurrentCulture.Name;
 }
 
 <div class="text-center">
@@ -18,13 +24,13 @@
             <div class="form-group">
                 <div class="form-group">
                     <label asp-for="ProductName" class="control-label"></label>
-                    <input asp-for="ProductName" class="form-control" />
+                    <input asp-for="ProductName" type="text" class="form-control" />
                     <span asp-validation-for="ProductName" class="text-danger"></span>
                 </div>
             </div>
             <div class="form-group">
                 <label asp-for="Price" class="control-label"></label>
-                <input asp-for="Price" class="form-control" Operator="GreaterThanEqual" />
+                <input asp-for="Price"    class="form-control"  />
                 <span asp-validation-for="Price" class="text-danger"></span>
             </div>
 

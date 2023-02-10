@@ -11,13 +11,13 @@ namespace Who_Owes_Money.Controllers
     {
         private readonly ApplicationDbContext _context;
         private readonly UserManager<IdentityUser> _userContext;
-        private readonly List<ResultCalculation> _results;
+        private readonly List<ResultOfCalculation> _results;
 
         public CalculationController(ApplicationDbContext context, UserManager<IdentityUser> userContext)
         {
             _context = context;
             _userContext = userContext;
-            _results = new List<ResultCalculation>(); ;
+            _results = new List<ResultOfCalculation>();
         }
 
         public IActionResult Calculation()
@@ -29,7 +29,7 @@ namespace Who_Owes_Money.Controllers
                 return View("NotFound");
             }
 
-            int average = products
+            decimal average = products
                 .Sum(m => m.Price)
                 / products
                 .GroupBy(m => m.UserName)
@@ -43,39 +43,39 @@ namespace Who_Owes_Money.Controllers
                     Price = g.Sum(p => p.Price)
                 }).ToArray();
 
-            Product[] paidMoreMoney = people.Where(m => m.Price > average).ToArray();
-            Product[] paidLessMoney = people.Where(m => m.Price < average).ToArray();
+            Product[] overPay = people.Where(m => m.Price > average).ToArray();
+            Product[] underPay = people.Where(m => m.Price < average).ToArray();
 
-            for (int i = 0; i < paidMoreMoney.Length; i++)
+            for (int i = 0; i < overPay.Length; i++)
             {
-                for (int j = 0; j < paidLessMoney.Length; j++)
+                for (int j = 0; j < underPay.Length; j++)
                 {
-                    int count = 0;
-                    while (paidLessMoney[j].Price != average)
+                    decimal count = 0;
+                    while (underPay[j].Price != average)
                     {
-                        if (paidMoreMoney[i].Price != average)
+                        if (overPay[i].Price != average)
                         {
-                            paidMoreMoney[i].Price -= 1;
-                            paidLessMoney[j].Price += 1;
+                            overPay[i].Price -= 0.01m;
+                            underPay[j].Price += 0.01m;
                             count++;
                         }
-                        if (paidLessMoney[j].Price == average)
+                        if (underPay[j].Price == average)
                         {
-                            _results.Add(new ResultCalculation
+                            _results.Add(new ResultOfCalculation
                             {
-                                UserLess = paidLessMoney[j].UserName,
-                                UserMore = paidMoreMoney[i].UserName,
-                                Money = count,
+                                UnderPay = underPay[j].UserName,
+                                OverPay = overPay[i].UserName,
+                                Amount = count/100,
                                 Average = average,
                             });
                         }
-                        else if (paidMoreMoney[i].Price == average)
+                        else if (overPay[i].Price == average)
                         {
-                            _results.Add(new ResultCalculation
+                            _results.Add(new ResultOfCalculation
                             {
-                                UserLess = paidLessMoney[j].UserName,
-                                UserMore = paidMoreMoney[i].UserName,
-                                Money = count
+                                UnderPay = underPay[j].UserName,
+                                OverPay = overPay[i].UserName,
+                                Amount = count/100
                             });
                             i++;
                             count = 0;

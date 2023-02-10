@@ -6,6 +6,7 @@ using Who_Owes_Money.Data;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using Who_Owes_Money.Infrastructure;
 
 namespace Who_Owes_Money
 {
@@ -26,7 +27,7 @@ namespace Who_Owes_Money
             services.AddDefaultIdentity<IdentityUser>
                 (options => options.SignIn.RequireConfirmedAccount = true)
                 .AddEntityFrameworkStores<ApplicationDbContext>();
-            services.AddControllersWithViews();
+            services.AddControllersWithViews(options => options.ModelBinderProviders.Insert(0, new CustomBinderProvider()));
             services.AddRazorPages();
 
 
