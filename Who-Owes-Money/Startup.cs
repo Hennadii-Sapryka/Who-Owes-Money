@@ -8,6 +8,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Who_Owes_Money.Infrastructure;
 using Microsoft.AspNetCore.Mvc;
+using Who_Owes_Money.Models;
 
 namespace Who_Owes_Money
 {
@@ -30,6 +31,8 @@ namespace Who_Owes_Money
                 .AddEntityFrameworkStores<ApplicationDbContext>();
             services.AddControllersWithViews();
             services.AddRazorPages();
+            services.AddTransient<Product>();
+
 
             services.AddMvc(opts =>
             {

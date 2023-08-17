@@ -22,25 +22,31 @@ namespace Who_Owes_Money.Models
 
         [Required]
         [Display(Name = "Price")]
-        [DisplayFormat(DataFormatString ="{0:c2}")]
+        [DisplayFormat(DataFormatString = "{0:c2}")]
         public double Price { get; set; }
 
         public string UserName { get; set; }
 
+        public Product() { }
+        public Product(ApplicationDbContext context)
+        {
+            _context = context;
+            _results = new List<ResultCalculation>();
+        }
 
-        public List<ResultCalculation> GetListOfBuers()
+        public List<ResultCalculation> getCalculationsFromBoughtProducts()
         {
             var products = _context.Product.ToList();
 
-            double average = Math.Round(products.Sum(m => m.Price))
-                / products.GroupBy(m => m.UserName).Count();
+            double average = Math.Truncate(products.Sum(m => m.Price)
+                / products.GroupBy(m => m.UserName).Count());
 
             Product[] buyers = products
                 .GroupBy(m => m.UserName)
                 .Select(g => new Product
                 {
                     UserName = g.Key,
-                    Price = g.Sum(p => p.Price)
+                    Price = Math.Truncate(g.Sum(p => p.Price))
                 }).ToArray();
 
             Product[] buyersOverPaid = buyers.Where(m => m.Price > average).ToArray();
@@ -83,9 +89,7 @@ namespace Who_Owes_Money.Models
                     }
                 }
             }
-
             return _results;
         }
     }
-
 }

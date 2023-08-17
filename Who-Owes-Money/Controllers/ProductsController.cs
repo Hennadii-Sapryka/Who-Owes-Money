@@ -14,17 +14,15 @@ namespace Who_Owes_Money.Controllers
         private readonly ApplicationDbContext _context;
         private readonly UserManager<IdentityUser> _identityUser;
 
-        public ProductsController(ApplicationDbContext context, 
+        public ProductsController(ApplicationDbContext context,
             UserManager<IdentityUser> identityUser)
         {
             _context = context;
             _identityUser = identityUser;
         }
 
-        public async Task<IActionResult> Index()
-        {
-            return View(await _context.Product.ToListAsync());
-        }
+        public async Task<IActionResult> Index() =>
+            View(await _context.Product.ToListAsync());
 
         public async Task<IActionResult> UserList()
         {
@@ -34,26 +32,17 @@ namespace Who_Owes_Money.Controllers
         [Authorize]
         public async Task<IActionResult> Details(int? id)
         {
-            if (id == null)
-            {
-                return NotFound();
-            }
+            if (id == null) return NotFound();
 
             var product = await _context.Product
                 .FirstOrDefaultAsync(m => m.Id == id);
-            if (product == null)
-            {
-                return NotFound();
-            }
 
             return View(product);
         }
 
         [Authorize]
-        public IActionResult Create()
-        {
-            return View();
-        }
+        public IActionResult Create() => View();
+
 
         [Authorize]
         [HttpPost]
@@ -74,16 +63,10 @@ namespace Who_Owes_Money.Controllers
 
         public async Task<IActionResult> Edit(int? id)
         {
-            if (id == null)
-            {
-                return NotFound();
-            }
+            if (id == null) return NotFound();
 
             var product = await _context.Product.FindAsync(id);
-            if (product == null)
-            {
-                return NotFound();
-            }
+           
             return View(product);
         }
 
@@ -92,10 +75,7 @@ namespace Who_Owes_Money.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(int id, Product product)
         {
-            if (id != product.Id)
-            {
-                return NotFound();
-            }
+            if (id != product.Id) return NotFound();
 
             if (ModelState.IsValid)
             {
@@ -125,17 +105,10 @@ namespace Who_Owes_Money.Controllers
 
         public async Task<IActionResult> Delete(int? id)
         {
-            if (id == null)
-            {
-                return NotFound();
-            }
+            if (id == null) return NotFound();
 
             var product = await _context.Product
                 .FirstOrDefaultAsync(m => m.Id == id);
-            if (product == null)
-            {
-                return NotFound();
-            }
 
             return View(product);
         }
@@ -151,9 +124,7 @@ namespace Who_Owes_Money.Controllers
             return RedirectToAction(nameof(Index));
         }
 
-        private bool ProductExists(int id)
-        {
-            return _context.Product.Any(e => e.Id == id);
-        }
+        private bool ProductExists(int id) => _context.Product.Any(e => e.Id == id);
+
     }
 }
